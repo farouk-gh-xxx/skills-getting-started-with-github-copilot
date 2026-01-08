@@ -5,6 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageDiv = document.getElementById("message");
 
   // Function to fetch activities from API
+
+  // Add delete button functionality
+  document.querySelectorAll('.delete-btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+      const participant = event.target.parentElement;
+      participant.remove(); // Unregister participant
+    });
+  });
   async function fetchActivities() {
     try {
       const response = await fetch("/activities");
@@ -66,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+        // Refresh the activities list to show the updated participants
+        fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
